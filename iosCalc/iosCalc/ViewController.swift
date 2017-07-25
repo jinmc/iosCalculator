@@ -15,15 +15,25 @@ class ViewController: UIViewController {
     var userIsInTheMiddleOfTyping = false
 
     @IBAction func touchDigit(_ sender: UIButton) {
-        let digit = sender.currentTitle!
-//        print("\(digit) is touched")
-        if userIsInTheMiddleOfTyping {
-            let textCurrentlyInDisplay = display.text!
-            display.text = textCurrentlyInDisplay + digit
-        } else {
-            display.text = digit
-            userIsInTheMiddleOfTyping = true
+        if let digit = sender.currentTitle {
+//            print("\(digit) is touched")
+            if userIsInTheMiddleOfTyping {
+                let textCurrentlyInDisplay = display.text!
+                display.text = textCurrentlyInDisplay + digit
+            } else {
+                display.text = digit
+                userIsInTheMiddleOfTyping = true
+            }
         }
+//        let digit = sender.currentTitle!
+//        print("\(digit) is touched")
+//        if userIsInTheMiddleOfTyping {
+//            let textCurrentlyInDisplay = display.text!
+//            display.text = textCurrentlyInDisplay + digit
+//        } else {
+//            display.text = digit
+//            userIsInTheMiddleOfTyping = true
+//        }
     }
     
     var displayValue: Double {
@@ -35,22 +45,21 @@ class ViewController: UIViewController {
         }
     }
     
+    private var brain = CalculatorBrain()
+    
     
     @IBAction func performOperation(_ sender: UIButton) {
-        userIsInTheMiddleOfTyping = false
-        if let mathematicalSymbol = sender.currentTitle {
-            switch mathematicalSymbol {
-                case "π":
-                    displayValue = Double.pi
-                case "√":
-                    displayValue = sqrt(displayValue)
-                case "c":
-                    displayValue = 0
-                    userIsInTheMiddleOfTyping = false
-                default:
-                    break
-            }
+        if userIsInTheMiddleOfTyping {
+            brain.setOperand(displayValue)
+            userIsInTheMiddleOfTyping = false
         }
+        if let mathematicalSymbol = sender.currentTitle {
+            brain.performOperation(mathematicalSymbol)
+        }
+        if let result = brain.result {
+            displayValue = result
+        }
+        
     }
     
     
