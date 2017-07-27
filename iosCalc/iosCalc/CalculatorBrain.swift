@@ -8,13 +8,6 @@
 
 import Foundation
 
-func changeSign(operand: Double) -> Double {
-    return -operand
-}
-
-func multiply(op1: Double, op2: Double) -> Double {
-    return op1 * op2
-}
 
 struct CalculatorBrain {
     
@@ -32,14 +25,11 @@ struct CalculatorBrain {
         "e" : Operation.constant(M_E),
         "√" : Operation.unaryOperation(sqrt),
         "cos" : Operation.unaryOperation(cos),
-        "±" : Operation.unaryOperation(changeSign),
-        "×" : Operation.binaryOperation({ (op1: Double, op2: Double) -> Double in
-            return op1 * op2
-            }
-),
-//        "+" : Operation.binaryOperation(plus),
-//        "-" : Operation.binaryOperation(minus),
-//        "÷" : Operation.binaryOperation(divide),
+        "±" : Operation.unaryOperation({ -$0 }),
+        "×" : Operation.binaryOperation({ $0 * $1 }),
+        "+" : Operation.binaryOperation({ $0 + $1 }),
+        "-" : Operation.binaryOperation({ $0 - $1 }),
+        "÷" : Operation.binaryOperation({ $0 / $1 }),
 //        "×" : Operation.binaryOperation(multiply),
         "=" : Operation.equals
     
